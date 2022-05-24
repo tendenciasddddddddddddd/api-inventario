@@ -10,6 +10,7 @@ const app = express()
 const i18n = require('i18n')
 const initMongo = require('./config/mongo')
 const path = require('path')
+const pkg = require('./package.json')
 
 // Setup express server port from ENV, default: 3000
 app.set('port', process.env.PORT || 3000)
@@ -18,7 +19,7 @@ app.set('port', process.env.PORT || 3000)
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'))
 }
-
+app.set("pkg", pkg);
 // Redis cache enabled by env variable
 if (process.env.USE_REDIS === 'true') {
   const getExpeditiousCache = require('express-expeditious')
@@ -61,7 +62,18 @@ var corsOptions = {
   origin: ['http://localhost:4200','http://localhost:8080'], // Reemplazar con dominio
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
-app.use(cors(corsOptions));
+
+// Welcome Routes
+app.get("/", (req, res) => {
+  res.json({
+    message: "Welcome to my Products API",
+    name: app.get("pkg").name,
+    version: app.get("pkg").version,
+    description: app.get("pkg").description,
+    author: app.get("pkg").author,
+  });
+});
+
 app.use(passport.initialize())
 app.use(compression())
 app.use(helmet())
@@ -71,7 +83,7 @@ app.engine('html', require('ejs').renderFile)
 app.set('view engine', 'html')
 app.use('/api/1.0', require('./app/routes'))
 app.listen(app.get('port'))
-
+app.use(cors(corsOptions));
 // Init MongoDB
 initMongo(app)
 
