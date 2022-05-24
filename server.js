@@ -58,7 +58,7 @@ app.use(i18n.init)
 
 // Init all other stuff
 var corsOptions = {
-  origin: ['http://localhost:4200'], // Reemplazar con dominio
+  origin: ['http://localhost:4200','http://localhost:8080'], // Reemplazar con dominio
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 app.use(cors(corsOptions));
