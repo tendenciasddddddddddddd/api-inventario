@@ -8,7 +8,7 @@ module.exports = (app = {}) => {
     mongoose.Promise = global.Promise
 
     mongoose.connect(
-      DB_URL ||"mongodb+srv://rstebans:Medid100.@cluster0.zmt0z.mongodb.net/?retryWrites=true&w=majority",
+      DB_URL ||"mongodb://localhost/apimayte",
       {
         keepAlive: true,
         useNewUrlParser: true,
